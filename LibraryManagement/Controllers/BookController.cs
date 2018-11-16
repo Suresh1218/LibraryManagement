@@ -25,7 +25,7 @@ namespace LibraryManagement.Controllers
             {
                 books = bookService.getAll().ToList()
             }; 
-            return View();
+            return View(model);
         }
 
     }

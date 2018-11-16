@@ -252,7 +252,7 @@
     <Compile Include="BootStapper.cs" />
     <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LibraryController.cs" />
+    <Compile Include="Controllers\LibraryApiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

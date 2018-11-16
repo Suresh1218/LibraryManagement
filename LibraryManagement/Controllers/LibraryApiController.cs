@@ -4,15 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using LibraryManagement.Models;
 
 namespace LibraryManagement.Controllers
 {
-    public class LibraryController : ApiController
+    public class LibraryApiController : ApiController
     {
-        public IHttpActionResult Login()
+        [HttpPost]
+        public IHttpActionResult Login(LoginModel model)
         {
 
-            return BadRequest();
+            return Ok();
         }
 
     }
