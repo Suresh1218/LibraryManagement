@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DataModel;
+using DataModel.Infrastructure;
+using DataModel.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +11,16 @@ namespace LibraryServise
 {
     public class UserService : IUserService
     {
-        private readonly IUserService userService;
-        private readonly IBookService bookService;
-        public UserService(IUserService _userService,IBookService _bookService)
+        private readonly IUserRepository userRepository;
+
+        public UserService(IUserRepository _userRepository)
         {
-            userService = _userService;
-            bookService = _bookService;
+            userRepository = _userRepository;
         }
+
     }
 
-    public interface IUserService
+    public interface IUserService 
     {
 
     }

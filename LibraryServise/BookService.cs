@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataModel;
+using DataModel.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +10,19 @@ namespace LibraryServise
 {
     public class BookService : IBookService
     {
-        private readonly IUserService userService;
-        private readonly IBookService bookService;
-        public BookService(IUserService _userService, IBookService _bookService)
+        private readonly IBookRepository bookRepository;
+        public BookService(IBookRepository _bookRepository)
         {
-            userService = _userService;
-            bookService = _bookService;
+            bookRepository = _bookRepository;
+        }
+        public IEnumerable<Books> getAll()
+        {
+            return bookRepository.GetAll().Where(b => b.NoOfStock > 0);
         }
     }
 
     public interface IBookService
     {
-
+        IEnumerable<Books> getAll();
     }
 }

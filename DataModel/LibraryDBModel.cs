@@ -8,7 +8,7 @@ namespace DataModel
     public partial class LibraryDBModel : DbContext
     {
         public LibraryDBModel()
-            : base("name=LibraryDBModel")
+            : base("LibraryDBModel")
         {
         }
 
@@ -24,9 +24,10 @@ namespace DataModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
+
         }
         public DbSet<User> User { get; set; }
-    }   
+        public DbSet<Books> Book { get; set; }
+    }
 }
 

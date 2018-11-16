@@ -1,4 +1,5 @@
-﻿using LibraryServise;
+﻿using LibraryManagement.Models;
+using LibraryServise;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,13 @@ namespace LibraryManagement.Controllers
             bookService = _bookService;
         }
 
-        public ActionResult Index()
+        public ActionResult AllBooks()
         {
-            return View();
+            BooksViewModel model = new BooksViewModel
+            {
+                books = bookService.getAll().ToList()
+            };
+            return View(model);
         }
 
         public ActionResult About()
@@ -37,6 +42,11 @@ namespace LibraryManagement.Controllers
         }
 
         public ActionResult LogIn()
+        {
+            return View();
+        }
+
+        public ActionResult Register()
         {
             return View();
         }
