@@ -1,0 +1,40 @@
+﻿<style>
+	body {
+		font-family: "Lato", sans-serif;
+	}
+
+	.sidenav {
+		height: 100%;
+		width: 200px;
+		position: fixed;
+		z-index: 1;
+		top: 50px;
+		left: 0;
+		background-color: #111;
+		overflow-x: hidden;
+		padding-top: 20px;
+	}
+
+	.sidenav a {
+		padding: 6px 6px 6px 32px;
+		text-decoration: none;
+		font-size: 14px;
+		color: #818181;
+		display: block;
+	}
+
+	.sidenav a:hover {
+		color: #f1f1f1;
+	}
+</style>
+<script>
+
+</script>
+<div class="sidenav">
+	
+	<a href="@Url.Action("UploadBook","Library")">UPLOAD BOOK</a>
+	<a href="@Url.Action("ViewUsers","Library")">VIEW USERS</a>
+	<a href="@Url.Action("","Library")">VIEW AUTHORES</a>
+	<a href="@Url.Action("","Library")">VIEW BOOKS LOG</a>
+	
+</div>

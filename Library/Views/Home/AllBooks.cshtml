@@ -3,11 +3,8 @@
 	ViewBag.Title = "AllBooks";
 }
 @model Library.Models.BooksViewModel
-<html>
-<head>
-	<h1>British Library</h1>
-</head>
-<body>
+
+	@Html.Partial("_SideNav")
 	<div class="row" style="background-color:#f5f5f5;margin-right:0px;">
 		<br />
 		<br />
@@ -44,5 +41,3 @@
 		<br />
 		<br />
 	</div>
-</body>
-</html>

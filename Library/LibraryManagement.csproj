@@ -232,6 +232,7 @@
     <Compile Include="BootStapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LibraryApiController.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -304,7 +305,12 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\AllBooks.cshtml" />
-    <Content Include="Views\Library\Home.cshtml" />
+    <Content Include="Views\Library\HomeAsync.cshtml" />
+    <Content Include="Views\Shared\_SideNavAdmin.cshtml" />
+    <Content Include="Views\Shared\_SideNavUser.cshtml" />
+    <Content Include="Views\Shared\_SideNav.cshtml" />
+    <Content Include="Views\Library\UploadBook.cshtml" />
+    <Content Include="Views\Library\ViewUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

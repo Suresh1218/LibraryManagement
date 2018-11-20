@@ -19,10 +19,15 @@ namespace LibraryServise
         {
             return bookRepository.GetAll().Where(b => b.NoOfStock > 0);
         }
+        public bool SaveBook(Books book)
+        {
+                return bookRepository.Add(book) != null ? true : false;
+        }
     }
 
     public interface IBookService
     {
         IEnumerable<Books> getAll();
+        bool SaveBook(Books book);
     }
 }

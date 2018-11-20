@@ -87,7 +87,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repository\BookRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="UserLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

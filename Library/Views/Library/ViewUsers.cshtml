@@ -1,0 +1,40 @@
+﻿
+
+@{
+	
+}
+@model Library.Models.BooksViewModel
+
+	@Html.Partial("_SideNavAdmin")
+	<form>
+		@if (Model.Users.Count != 0 && Model.Users != null)
+		{
+			
+			<table class="table">
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Name</th>
+						<th scope="col">Contact Number</th>
+						<th scope="col">EmailId</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var user in Model.Users)
+					{
+
+						<tr>
+							<th scope="row"></th>
+							<td>@user.UserName</td>
+							<td>@user.PhoneNumber</td>
+							<td>@user.Email</td>
+						</tr>
+						
+					}
+
+				</tbody>
+			</table>
+		}
+	</form>
+
+

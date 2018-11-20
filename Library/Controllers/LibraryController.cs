@@ -1,6 +1,7 @@
 ﻿using Library.Models;
 using LibraryServise;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
@@ -35,24 +36,38 @@ namespace Library.Controllers
         }
 
         // GET: Library
-        public async System.Threading.Tasks.Task<ActionResult> HomeAsync()
+        public ActionResult HomeAsync()
         {
             BooksViewModel model = new BooksViewModel();
 
             model.books = bookService.getAll().ToList();
-            var userId = User.Identity.GetUserId();
-            //var user = await UserManager.GetRoles();
-            //model.User = userService.getUserRolle(User.Identity.GetUserId());
-            
-            model.User = "Admin";
+            model.IsAdmin = isAdminUser();
             return View(model);
         }
         
         
-        [Authorize(Roles ="")]
+        [Authorize(Roles ="Admin")]
         public ActionResult UploadBook()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult ViewUsers()
+        {
+            BooksViewModel model = new BooksViewModel();
+            model.Users = UserManager.Users.ToList();
+            return View(model);
+        }
+
+        public bool isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                return UserManager.IsInRole(user.GetUserId(),"Admin");
+            }
+            return false;
         }
     }
 }
