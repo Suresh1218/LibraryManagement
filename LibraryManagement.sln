@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryServise", "LibraryServise\LibraryServise.csproj", "{55C229CB-FC58-4D34-AF04-2CB5048EB1E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Library\Library.csproj", "{E0436884-7B7F-48E6-A356-A55CE8DABEBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement", "Library\LibraryManagement.csproj", "{E0436884-7B7F-48E6-A356-A55CE8DABEBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
