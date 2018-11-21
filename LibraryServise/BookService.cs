@@ -1,4 +1,5 @@
 ﻿using DataModel;
+using DataModel.Infrastructure;
 using DataModel.Repository;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ namespace LibraryServise
 {
     public class BookService : IBookService
     {
+        private IUnitOfWork unitOfWork;
         private readonly IBookRepository bookRepository;
-        public BookService(IBookRepository _bookRepository)
+        public BookService(IBookRepository _bookRepository,IUnitOfWork _unitOfWork)
         {
+            unitOfWork = _unitOfWork;
             bookRepository = _bookRepository;
         }
         public IEnumerable<Books> getAll()
@@ -21,12 +24,22 @@ namespace LibraryServise
         }
         public bool SaveBook(Books book)
         {
-                return bookRepository.Add(book) != null ? true : false;
+            if (bookRepository.Add(book)!=null)
+            {
+                SaveChanges();
+                return true;
+            }
+            return false;
+        }
+        public void SaveChanges()
+        {
+            unitOfWork.SaveChanges();
         }
     }
 
     public interface IBookService
     {
+        void SaveChanges();
         IEnumerable<Books> getAll();
         bool SaveBook(Books book);
     }

@@ -11,9 +11,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Library.Models;
+using System.Web.Http.Cors;
 
 namespace Library.Controllers
 {
+    [EnableCors(origins: "http://localhost:51353", headers: "*", methods: "*")]
     public class LibraryApiController : ApiController
     {
         private readonly IUserService userService;
@@ -24,7 +26,6 @@ namespace Library.Controllers
             bookService = _bookService;
         }
         
-        [Route("v1/api/SaveBook")]
         [HttpPost]
         public IHttpActionResult SaveBook(Books book)
         {
@@ -39,6 +40,7 @@ namespace Library.Controllers
                 return Unauthorized();
         }
 
+        [NonAction]
         public bool isAdminUser()
         {
             if (User.Identity.IsAuthenticated)

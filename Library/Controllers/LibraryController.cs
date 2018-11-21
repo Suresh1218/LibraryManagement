@@ -49,7 +49,9 @@ namespace Library.Controllers
         [Authorize(Roles ="Admin")]
         public ActionResult UploadBook()
         {
-            return View();
+            BooksViewModel model = new BooksViewModel();
+            model.domain = @"http://localhost:51353";
+            return View(model);
         }
 
         [Authorize(Roles = "Admin")]

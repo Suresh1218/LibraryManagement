@@ -28,13 +28,12 @@ namespace Library
             containerBuilder.RegisterType<DataBaseFactory>().As<IDataBaseFactory>().AsImplementedInterfaces().InstancePerApiRequest();
             containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>().AsImplementedInterfaces().InstancePerApiRequest();
 
-            containerBuilder.RegisterType<BookService>().As<IBookService>().AsImplementedInterfaces().InstancePerApiRequest();
-            containerBuilder.RegisterType<UserService>().As<IUserService>().AsImplementedInterfaces().InstancePerApiRequest();
+            containerBuilder.RegisterType<BookRepository>().As<IBookRepository>().AsImplementedInterfaces().InstancePerApiRequest();
+            containerBuilder.RegisterType<UserRepository>().As<IUserRepository>().AsImplementedInterfaces().InstancePerApiRequest();
             
             containerBuilder.RegisterType<UserService>().As<IUserService>().AsImplementedInterfaces().InstancePerApiRequest();
             containerBuilder.RegisterType<BookService>().As<IBookService>().AsImplementedInterfaces().InstancePerApiRequest();
-
-
+            
             containerBuilder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             IContainer container = containerBuilder.Build();
 

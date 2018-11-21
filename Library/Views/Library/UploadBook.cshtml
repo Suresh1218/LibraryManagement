@@ -4,28 +4,66 @@
     ViewBag.Title = "UploadBook";
 }
 
+<script>
+	
+	function AddBook(url)
+	{
+		debugger;
+		var urlVal = url + '/api/LibraryApi/SaveBook';
+		var Price = $("#price").val();
+		var BookName = $("#name").val();
+		var AuthoreName = $("#authore").val();
+		var Quantity = $("#quantity").val();
+		var ImgUrl = $("#image").val();
+		if (BookName != null && AuthoreName != null && Quantity != null)
+		{
+			var dataObj = {
+				"Name": BookName,
+				"Author": AuthoreName,
+				"NoOfStock": Quantity,
+				"NoOfBooksIsInUse":0,
+				"BookPrice": Price,
+				"ImageUrl": ImgUrl
+			}
+		}
+		$.ajax({
+			url: urlVal,
+			type: "POST",
+			contentType: 'application/json;charset=utf-8',
+			data: JSON.stringify(dataObj),
+			dataType: "json",
+			success: function (data, status) {
+				$("#onSuccess").val() = "Saved Successfully";
+			}
+		});
+	}
 
+</script>
 	
 	@Html.Partial("_SideNavAdmin")
 	
-	<form>
-		<div class="form-group">
-			<label for="EnterBookName">Book Name</label>
-			<input type="text" class="form-control" id="name" placeholder="Name of the book">
-		</div>
-		<div class="form-group">
-			<label for="EnterAuthoreNaem">Authore Name</label>
-			<input type="text" class="form-control" id="authore" placeholder="Name of the book authore">
-		</div>
-		<div class="form-group">
-			<label for="GetQuantity">Enter Quantity</label>
-			<input type="number" class="form-control" id="quantity" placeholder="Enter Quantity" />
-		</div>
-		<div class="form-group">
-			<label for="UploadImage">UploadImage</label>
-			<input type="file" class="form-control" id="image" placeholder="Upload Image" />
-		</div>
-		<button type="submit" class="btn btn-primary" onclick="SaveBook()">Save</button>
-		<p id="onSuccess"></p>
-	</form>
+<div>
+	<div class="form-group">
+		<label for="EnterBookName">Book Name</label>
+		<input type="text" class="form-control" id="name" placeholder="Name of the book" required>
+	</div>
+	<div class="form-group">
+		<label for="EnterAuthoreNaem">Authore Name</label>
+		<input type="text" class="form-control" id="authore" placeholder="Name of the book authore" required>
+	</div>
+	<div class="form-group">
+		<label for="GetQuantity">Enter Quantity</label>
+		<input type="number" class="form-control" id="quantity" min="1" placeholder="Enter Quantity" required />
+	</div>
+	<div class="form-group">
+		<label for="GetQuantity">Price</label>
+		<input type="text" class="form-control" id="price"  placeholder="Enter Price" required pattern="\d+(\.\d{2})?" />
+	</div>
+	<div class="form-group">
+		<label for="UploadImage">UploadImage</label>
+		<input type="file" class="form-control" id="image" placeholder="Upload Image" />
+	</div>
+	<button type="submit" class="btn btn-primary" onclick="AddBook('@Model.domain')">Save</button>
+	<p id="onSuccess"></p>
+</div>
 
