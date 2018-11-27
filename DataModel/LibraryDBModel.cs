@@ -26,8 +26,9 @@ namespace DataModel
         {
 
         }
-        public DbSet<UserLog> User { get; set; }
-        public DbSet<Books> Book { get; set; }
+        public DbSet<UserLog> UserOrders { get; set; }
+        public DbSet<Books> Books { get; set; }
+        public DbSet<UserCart> Cart { get; set; }
     }
 }
 

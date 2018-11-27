@@ -33,7 +33,13 @@ namespace Library
             
             containerBuilder.RegisterType<UserService>().As<IUserService>().AsImplementedInterfaces().InstancePerApiRequest();
             containerBuilder.RegisterType<BookService>().As<IBookService>().AsImplementedInterfaces().InstancePerApiRequest();
-            
+
+            containerBuilder.RegisterType<UserCartRepository>().As<IUserCartRepository>().AsImplementedInterfaces().InstancePerApiRequest();
+            containerBuilder.RegisterType<CartService>().As<ICartService>().AsImplementedInterfaces().InstancePerApiRequest();
+
+            containerBuilder.RegisterType<OrderService>().As<IOrderService>().AsImplementedInterfaces().InstancePerApiRequest();
+            containerBuilder.RegisterType<UserLogRepository>().As<IUserLogRepository>().AsImplementedInterfaces().InstancePerApiRequest();
+
             containerBuilder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             IContainer container = containerBuilder.Build();
 
@@ -57,6 +63,11 @@ namespace Library
             container.RegisterType<BookRepository>().As<IBookRepository>().InstancePerRequest();
             container.RegisterType<UserRepository>().As<IUserRepository>().InstancePerRequest();
 
+            container.RegisterType<UserCartRepository>().As<IUserCartRepository>().InstancePerRequest();
+            container.RegisterType<CartService>().As<ICartService>().InstancePerRequest();
+
+            container.RegisterType<UserLogRepository>().As<IUserLogRepository>().InstancePerRequest();
+            container.RegisterType<OrderService>().As<IOrderService>().InstancePerRequest();
 
             //container.RegisterType<HomeController>();
             // Set the dependency resolver to be Autofac.

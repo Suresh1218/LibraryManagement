@@ -4,6 +4,31 @@
 }
 @model Library.Models.BooksViewModel
 
+<script>
+
+	function AddBooktoCart(url,bookId)
+	{
+		var urlVal = url + '/api/LibraryApi/AddBookToCart?bookId=' + bookId;
+		$.ajax({
+			url: urlVal,
+			type: "POST",
+			contentType: 'application/json;charset=utf-8',
+			dataType: "json",
+			success: function (status) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload();
+					alert("Added Successfully");
+				}
+			}
+		});
+	}
+
+	function UpdateBookDetails(bookId)
+	{
+
+	}
+
+</script>
 	@if (Model.IsAdmin)
 	{
 		@Html.Partial("_SideNavAdmin")
@@ -37,9 +62,27 @@
 							</div>
 						</div>
 						<div class="panel-body" style="background-color:white">
-							<a href="#" style="color: black;width:auto;overflow:hidden;" align="center" target="_blank">@info.Name</a><br />
-							<a href="# " target="_blank" class="open-AddBookDialog btn btn-primary btn-lg" data-id="@info.Author" style="width: 55%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50">Book Name - @info.Author</a>
-							<a href="# " target="_blank" class="open-AddBookDialog1 btn btn-primary btn-lg" data-id="@info.NoOfStock" style="width: 40%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50">Authore - @info.NoOfStock</a>
+							<h3 style="color: black;width:auto;overflow:hidden;" align="center">@info.Name</h3><br />
+							<h4 style="color: black;width:auto;overflow:hidden;">Authore - @info.Author</h4>
+							<h5 style="color: black;width:auto;overflow:hidden;">In Stock - @info.NoOfStock</h5>
+
+							@if (Model.IsAdmin)
+							{
+								<button onclick="location.href='@Url.Action("UpdateBookDetails", "Library", new { id = info.Id })'" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 65%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50">Update The Details</button>
+
+							}
+							else
+							{
+								if (info.isAddedToCart)
+								{
+									<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" disabled>Added In Cart</button>
+								}
+								else
+								{
+									<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" >Add To Cart</button>
+								}
+							}
+
 						</div>
 					</div>
 				</div>

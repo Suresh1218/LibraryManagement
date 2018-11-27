@@ -257,6 +257,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons8_flat_plus.svg.png" />
+    <Content Include="Content\minus.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -317,6 +319,10 @@
     <Content Include="Views\Shared\_SideNav.cshtml" />
     <Content Include="Views\Library\UploadBook.cshtml" />
     <Content Include="Views\Library\ViewUsers.cshtml" />
+    <Content Include="Views\Library\ViewCategories.cshtml" />
+    <Content Include="Views\Library\checkCart.cshtml" />
+    <Content Include="Views\Library\UpdateBookDetails.cshtml" />
+    <Content Include="Views\Library\ViewAuthores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

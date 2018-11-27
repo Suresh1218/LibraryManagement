@@ -1,0 +1,68 @@
+﻿@model DataModel.Books
+
+@{
+
+}
+<script>
+
+	function UpdateDetails(id)
+	{
+		var urlVal = 'http://localhost:51353/api/LibraryApi/UpdateBook';
+		var Price = $("#price").val();
+		var BookName = $("#name").val();
+		var AuthoreName = $("#authore").val();
+		var Quantity = $("#quantity").val();
+
+		if (BookName !== null && AuthoreName !== null && Quantity !== null) {
+			var dataObj = {
+				"Id": id,
+				"Name": BookName,
+				"Author": AuthoreName,
+				"NoOfStock": Quantity,
+				"BookPrice": Price
+			}
+		}
+		$.ajax({
+			url: urlVal,
+			type: "POST",
+			contentType: 'application/json;charset=utf-8',
+			data: JSON.stringify(dataObj),
+			dataType: "json",
+			success: function (status) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload();
+					alert("Saved Successfully");
+				}
+			}
+		});
+	}
+
+</script>
+@Html.Partial("_SideNavAdmin")
+<div class="form-horizontal">
+	<h4>Books</h4>
+	<hr />
+
+	<div class="form-group">
+		<label for="EnterBookName">Book Name</label>
+		<input type="text" class="form-control" id="name" placeholder="@Model.Name" required>
+	</div>
+	<div class="form-group">
+		<label for="EnterAuthoreNaem">Authore Name</label>
+		<input type="text" class="form-control" id="authore" placeholder="@Model.Author" required>
+	</div>
+	<div class="form-group">
+		<label for="GetQuantity">Enter Quantity</label>
+		<input type="number" class="form-control" id="quantity" min="@Model.NoOfStock" placeholder="@Model.NoOfStock" required />
+	</div>
+	<div class="form-group">
+		<label for="GetQuantity">Price</label>
+		<input type="text" class="form-control" id="price" placeholder="@Model.BookPrice" required pattern="\d+(\.\d{2})?" />
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="Save" class="btn btn-default" onclick="UpdateDetails('@Model.Id')" />
+		</div>
+	</div>
+</div>

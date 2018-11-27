@@ -20,8 +20,11 @@ namespace Library.Controllers
     {
         private readonly IUserService userService;
         private readonly IBookService bookService;
-        public LibraryApiController(IUserService _userService, IBookService _bookService)
+        private readonly ICartService cartService;
+
+        public LibraryApiController(IUserService _userService, IBookService _bookService, ICartService _cartService)
         {
+            cartService = _cartService;
             userService = _userService;
             bookService = _bookService;
         }
@@ -32,12 +35,32 @@ namespace Library.Controllers
             if (isAdminUser())
             {
                 if (bookService.SaveBook(book))
-                    return Ok();
+                    return Ok(book);
                 else
                     return BadRequest();
             }
             else
                 return Unauthorized();
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddBookToCart([FromUri]int bookId)
+        {
+            string uid = User.Identity.GetUserId();
+            Books selectBook = bookService.getBookById(bookId);
+            if (bookService.IsBookAvailableInStock(selectBook))
+            {
+                if (cartService.SaveOrUpdate(uid, selectBook))
+                    return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPost]
+        public IHttpActionResult UpdateBook(Books book)
+        {
+            if (bookService.UpdateBook(book))
+                return Ok();
+            return BadRequest();
         }
 
         [NonAction]

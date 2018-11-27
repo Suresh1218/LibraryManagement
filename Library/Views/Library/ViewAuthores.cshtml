@@ -1,0 +1,58 @@
+﻿@model Library.Models.BooksViewModel
+
+@{
+	ViewBag.Title = "ViewCategories";
+}
+<style>
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: center;
+    padding: 16px;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+</style>
+@if (Model.IsAdmin)
+{
+	@Html.Partial("_SideNavAdmin")
+}
+else if (Model.IsUser)
+{
+	@Html.Partial("_SideNavUser")
+}
+else
+{
+	@Html.Partial("_SideNav")
+}
+<div>
+	<table>
+		<tr>
+			<th style="width:50%">Authors Name</th>
+			
+			<th>No Of Books</th>
+		</tr>
+		@if (Model.AuthorAndBookList != null)
+		{
+			foreach (var author in Model.AuthorAndBookList)
+			{
+				<tr>
+					<td>@author.Key</td>
+					<td>@author.Value</td>
+					
+				</tr>
+			}
+		}
+	</table>
+</div>

@@ -1,5 +1,7 @@
 ﻿using Library.Models;
 using LibraryServise;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ namespace Library.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationUserManager _userManager;
         private readonly IUserService userService;
         private readonly IBookService bookService;
         public HomeController(IUserService _userService, IBookService _bookService)
@@ -18,8 +21,25 @@ namespace Library.Controllers
             bookService = _bookService;
         }
 
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         public ActionResult AllBooks()
         {
+            
+            if (isAdminUser() || IsUser())
+            {
+                return RedirectToAction("HomeAsync", "Library");
+            }
             BooksViewModel model = new BooksViewModel
             {
                 books = bookService.getAll().ToList()
@@ -39,6 +59,27 @@ namespace Library.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [NonAction]
+        public bool isAdminUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                return UserManager.IsInRole(user.GetUserId(), "Admin");
+            }
+            return false;
+        }
+        [NonAction]
+        public bool IsUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                return UserManager.IsInRole(user.GetUserId(), "User");
+            }
+            return false;
         }
     }
 }
