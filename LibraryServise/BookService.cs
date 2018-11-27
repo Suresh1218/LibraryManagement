@@ -99,6 +99,12 @@ namespace LibraryServise
 
             return Categories;
         }
+
+        public IEnumerable<Books> getBooksOfAuthor(string name)
+        {
+            return bookRepository.Query(b => b.Author.Equals(name)).ToList();
+        }
+
         public void SaveChanges()
         {
             unitOfWork.SaveChanges();
@@ -116,5 +122,6 @@ namespace LibraryServise
         bool UpdateBook(Books book);
         Dictionary<string, int> getAuthoreList();
         Dictionary<string, int> getCategoryList();
+        IEnumerable<Books> getBooksOfAuthor(string name);
     }
 }

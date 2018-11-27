@@ -154,6 +154,43 @@ namespace Library.Controllers
             return View(book);
         }
 
+        [AllowAnonymous]
+        public ActionResult CheckAuthoreBooks(string name)
+        {
+            BooksViewModel model = new BooksViewModel();
+            var AllBooks = bookService.getBooksOfAuthor(name).ToList();
+            model.IsAdmin = isAdminUser();
+            model.IsUser = IsUser();
+            if (IsUser() && AllBooks != null) 
+            {
+                model.IsUser = true;
+                List<string> cartAddedBooks = cartService.getAddedBooks(User.Identity.GetUserId());
+
+                foreach (var book in cartAddedBooks)
+                {
+                    var bookmodel = AllBooks.Where(b => b.Name.Equals(book))
+                                    .Select(b => new Books()
+                                    {
+                                        Name = b.Name,
+                                        Id = b.Id,
+                                        NoOfBooksIsInUse = b.NoOfBooksIsInUse,
+                                        Author = b.Author,
+                                        NoOfStock = b.NoOfStock,
+                                        BookPrice = b.BookPrice,
+                                        isAddedToCart = true,
+                                        ImageUrl = b.ImageUrl,
+                                    }).FirstOrDefault();
+                    model.books.Add(bookmodel);
+                }
+
+            }
+            else
+            {
+                model.books = AllBooks;
+            }
+            return View(model);
+        }
+
         [NonAction]
         public bool isAdminUser()
         {

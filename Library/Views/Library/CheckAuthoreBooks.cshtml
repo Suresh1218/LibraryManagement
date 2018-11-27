@@ -1,0 +1,55 @@
+﻿@model Library.Models.BooksViewModel
+@{
+
+}
+@{
+	ViewBag.Title = "ViewCategories";
+}
+
+@if (Model.IsAdmin)
+{
+	@Html.Partial("_SideNavAdmin")
+}
+else if (Model.IsUser)
+{
+	@Html.Partial("_SideNavUser")
+}
+else
+{
+	@Html.Partial("_SideNav")
+}
+<div>
+	<table>
+		<tr>
+			<th style="width:10%">Name</th>
+
+			<th>Price</th>
+			@if (Model.IsUser)
+			{
+				<th><button>Add To Cart</button></th>
+			}
+		</tr>
+		@if (Model.books != null)
+		{
+			foreach (var category in Model.books)
+			{
+				<tr>
+					<td>@category.Name</td>
+					<td>@category.BookPrice</td>
+					@if (Model.IsUser)
+					{
+						if (category.isAddedToCart)
+						{
+							<td><button disabled>Added In Cart</button></td>
+						}
+						else
+						{
+							<td><button>Add To Cart</button></td>
+						}
+
+					}
+				</tr>
+			}
+		}
+	</table>
+</div>

@@ -323,6 +323,7 @@
     <Content Include="Views\Library\checkCart.cshtml" />
     <Content Include="Views\Library\UpdateBookDetails.cshtml" />
     <Content Include="Views\Library\ViewAuthores.cshtml" />
+    <Content Include="Views\Library\CheckAuthoreBooks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

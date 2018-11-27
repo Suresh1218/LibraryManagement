@@ -120,6 +120,7 @@
 	.quantity {
 		padding-top: 20px;
 		margin-right: 60px;
+		padding-left: 25px;
 	}
 
 		.quantity input {
@@ -177,6 +178,11 @@
 			document.getElementById("count_" + id).value = count - 1;
 		}
 	}
+
+	function UpdateCart(id,count) {
+
+	}
+
 </script>
 @Html.Partial("_SideNavUser")
 <div class="shopping-cart">
@@ -188,7 +194,7 @@
 	{
 		foreach (var product in Model.cart.selectedBooks)
 		{
-			<div class="item">
+			<div class="item" id="BookList_"@product.Id>
 				<div class="buttons">
 					<span class="delete-btn"></span>
 					<span class="like-btn"></span>
@@ -217,9 +223,9 @@
 				<div class="total-price">@product.BookPrice</div>
 			</div>
 		}
-		<div class="total-price">@Model.cart.TotalAmount</div>
+		<div class="total-price" style="padding-left: 60%;">@Model.cart.TotalAmount</div>
 		<div>
-			<button style="width=20%">Update</button>
+			<button style="width=20%" onclick="UpdateCart('@Model.cart.CartId','@Model.cart')">Update</button>
 			<button style="width=20%">Check Out</button>
 		</div>
 	}
