@@ -22,7 +22,7 @@ namespace LibraryServise
 
         public IEnumerable<Books> getAll()
         {
-            return bookRepository.GetAll().Where(b => b.NoOfStock > 0);
+            return (bookRepository.GetAll().Where(b => b.NoOfStock > 0)).OrderByDescending(b=>b.Id);
         }
         
         public bool SaveBook(Books book)
@@ -42,7 +42,7 @@ namespace LibraryServise
 
         public bool IsBookAvailableInStock(Books book)
         {
-            Books available = bookRepository.Query(b => b.Id == book.Id && b.NoOfBooksIsInUse < b.NoOfStock).FirstOrDefault();
+            Books available = bookRepository.Query(b => b.Id == book.Id && b.NoOfBooksIsInUse < b.NoOfStock,true).FirstOrDefault();
             if (available != null)
                 return true;
             else
@@ -73,6 +73,7 @@ namespace LibraryServise
             }
             return false;
         }
+
         public Dictionary<string,int> getAuthoreList()
         {
             Dictionary<string,int> Authors = new Dictionary<string, int>();
@@ -81,11 +82,13 @@ namespace LibraryServise
             {
                 string name = bk.Author;
                 int count = books.Count(b => b.Author == name);
-                Authors.Add(name,count);
+                if(!Authors.ContainsKey(name))
+                    Authors.Add(name,count);
             }
             
             return Authors;
         }
+
         public Dictionary<string, int> getCategoryList()
         {
             Dictionary<string, int> Categories = new Dictionary<string, int>();
@@ -94,7 +97,9 @@ namespace LibraryServise
             {
                 string name = bk.Category;
                 int count = books.Count(b => b.Category == name);
-                Categories.Add(name, count);
+                if(!Categories.ContainsKey(name))
+                    Categories.Add(name, count);
+                
             }
 
             return Categories;
@@ -103,6 +108,20 @@ namespace LibraryServise
         public IEnumerable<Books> getBooksOfAuthor(string name)
         {
             return bookRepository.Query(b => b.Author.Equals(name)).ToList();
+        }
+
+        public IEnumerable<Books> getBooksOfCategory(string name)
+        {
+            return bookRepository.Query(b => b.Category.Equals(name)).ToList();
+        }
+
+        public bool IsPresentAlready(string bookName,string AuthoreName)
+        {
+            Books book = bookRepository.Query(b => b.Name.Equals(bookName) && b.Author.Equals(AuthoreName), true).FirstOrDefault();
+            if (book != null)
+                return true;
+            else
+                return false;
         }
 
         public void SaveChanges()
@@ -123,5 +142,7 @@ namespace LibraryServise
         Dictionary<string, int> getAuthoreList();
         Dictionary<string, int> getCategoryList();
         IEnumerable<Books> getBooksOfAuthor(string name);
+        IEnumerable<Books> getBooksOfCategory(string name);
+        bool IsPresentAlready(string bookName,string AuthoreName);
     }
 }

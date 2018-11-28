@@ -48,7 +48,7 @@ else
 			foreach (var category in Model.CategoriesAndCount)
 			{
 				<tr>
-					<td>@category.Key</td>
+					<td><a href="@Url.Action("CheckCategoryBooks","Library",new { category = category.Key})">@category.Key</a></td>
 					<td>@category.Value</td>
 
 				</tr>

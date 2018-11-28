@@ -69,7 +69,15 @@ namespace Library.Controllers
                                     }).FirstOrDefault();
                     model.books.Add(bookmodel);
                 }
-                
+                foreach (var book in AllBooks)
+                {
+                    if (!model.books.Any(b => b.Id == book.Id))
+                        model.books.Add(book);
+                }
+            }
+            else
+            {
+                model.books = AllBooks;
             }
             return View(model);
         }
@@ -137,6 +145,7 @@ namespace Library.Controllers
 
             return View();
         }
+
         [Authorize(Roles = "User")]
         public ActionResult checkCart()
         {
@@ -146,6 +155,7 @@ namespace Library.Controllers
             model.cart = cartService.GetCart(id);
             return View(model);
         }
+
         [Authorize(Roles ="Admin")]
         public ActionResult UpdateBookDetails(int id)
         {
@@ -155,34 +165,87 @@ namespace Library.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult CheckAuthoreBooks(string name)
+        public ActionResult CheckAuthoreBooks(string name = "Cris Hammer")
         {
             BooksViewModel model = new BooksViewModel();
             var AllBooks = bookService.getBooksOfAuthor(name).ToList();
             model.IsAdmin = isAdminUser();
-            model.IsUser = IsUser();
             if (IsUser() && AllBooks != null) 
             {
                 model.IsUser = true;
-                List<string> cartAddedBooks = cartService.getAddedBooks(User.Identity.GetUserId());
-
-                foreach (var book in cartAddedBooks)
+                List<string> cartAddedBooks = cartService.getAddedBookOfAuthor(User.Identity.GetUserId(),name);
+                if (cartAddedBooks.Count > 0)
                 {
-                    var bookmodel = AllBooks.Where(b => b.Name.Equals(book))
-                                    .Select(b => new Books()
-                                    {
-                                        Name = b.Name,
-                                        Id = b.Id,
-                                        NoOfBooksIsInUse = b.NoOfBooksIsInUse,
-                                        Author = b.Author,
-                                        NoOfStock = b.NoOfStock,
-                                        BookPrice = b.BookPrice,
-                                        isAddedToCart = true,
-                                        ImageUrl = b.ImageUrl,
-                                    }).FirstOrDefault();
-                    model.books.Add(bookmodel);
+                    foreach (var book in cartAddedBooks)
+                    {
+                        var bookmodel = AllBooks.Where(b => b.Name.Equals(book))
+                                        .Select(b => new Books()
+                                        {
+                                            Name = b.Name,
+                                            Id = b.Id,
+                                            NoOfBooksIsInUse = b.NoOfBooksIsInUse,
+                                            Author = b.Author,
+                                            NoOfStock = b.NoOfStock,
+                                            BookPrice = b.BookPrice,
+                                            isAddedToCart = true,
+                                            ImageUrl = b.ImageUrl,
+                                        }).FirstOrDefault();
+                        model.books.Add(bookmodel);
+                    }
+                    foreach (var book in AllBooks)
+                    {
+                        if (!model.books.Any(b => b.Id == book.Id))
+                            model.books.Add(book);
+                    }
+                    (model.books).OrderByDescending(b => b.Id);
                 }
+                else
+                    model.books = AllBooks;
+            }
+            else
+            {
+                model.books = AllBooks;
+            }
+            return View(model);
+        }
 
+        [AllowAnonymous]
+        public ActionResult CheckCategoryBooks(string category = "Fiction")
+        {
+            BooksViewModel model = new BooksViewModel();
+            //BookCategory.BookCategories mycategory = (BookCategory.BookCategories)Enum.Parse(typeof(BookCategory.BookCategories), category, true);
+            var AllBooks = bookService.getBooksOfCategory(category).ToList();
+            model.IsAdmin = isAdminUser();
+            if (IsUser() && AllBooks != null)
+            {
+                model.IsUser = true;
+                List<string> cartAddedBooks = cartService.getAddedBookOfCategory(User.Identity.GetUserId(), category);
+                if (cartAddedBooks.Count > 0)
+                {
+                    foreach (var book in cartAddedBooks)
+                    {
+                        var bookmodel = AllBooks.Where(b => b.Name.Equals(book))
+                                        .Select(b => new Books()
+                                        {
+                                            Name = b.Name,
+                                            Id = b.Id,
+                                            NoOfBooksIsInUse = b.NoOfBooksIsInUse,
+                                            Author = b.Author,
+                                            NoOfStock = b.NoOfStock,
+                                            BookPrice = b.BookPrice,
+                                            isAddedToCart = true,
+                                            ImageUrl = b.ImageUrl,
+                                        }).FirstOrDefault();
+                        model.books.Add(bookmodel);
+                    }
+                    foreach (var book in AllBooks)
+                    {
+                        if (!model.books.Any(b => b.Id == book.Id))
+                            model.books.Add(book);
+                    }
+                }
+                else
+                    model.books = AllBooks;
             }
             else
             {

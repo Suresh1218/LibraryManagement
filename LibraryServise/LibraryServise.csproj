@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="BookService.cs" />
     <Compile Include="CartService.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

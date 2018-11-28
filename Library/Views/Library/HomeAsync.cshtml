@@ -14,12 +14,17 @@
 			type: "POST",
 			contentType: 'application/json;charset=utf-8',
 			dataType: "json",
-			success: function (status) {
+			success: function () {
 				if (status.status === 210 || status.status === 200) {
 					location.reload();
 					alert("Added Successfully");
 				}
+			},
+			complete: function () {
+				location.reload();
+				alert("Saved Successfully ");
 			}
+
 		});
 	}
 

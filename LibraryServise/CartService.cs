@@ -57,6 +57,24 @@ namespace LibraryServise
             return names;
         }
 
+        public List<string> getAddedBookOfAuthor(string uid, string AuthoreName)
+        {
+            var cart = cartRepository.Query(c => c.userId.Equals(uid)).FirstOrDefault();
+            var names = (from name in cart.selectedBooks
+                         where name.Author.Equals(AuthoreName)
+                         select name.Name).ToList();
+            return names;
+        }
+
+        public List<string> getAddedBookOfCategory(string uid, string category)
+        {
+            var cart = cartRepository.Query(c => c.userId.Equals(uid)).FirstOrDefault();
+            var names = (from name in cart.selectedBooks
+                         where name.Category.Equals(category)
+                         select name.Name).ToList();
+            return names;
+        }
+
         public void SaveChanges()
         {
             unitOfWork.SaveChanges();
@@ -67,6 +85,8 @@ namespace LibraryServise
     {
         bool SaveOrUpdate(string uid,Books book);
         List<string> getAddedBooks(string uid);
+        List<string> getAddedBookOfAuthor(string uid, string AuthoreName);
+        List<string> getAddedBookOfCategory(string uid,string category);
         UserCart GetCart(string uid);
         void SaveChanges();
     }

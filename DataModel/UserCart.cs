@@ -27,6 +27,8 @@ namespace DataModel
         public DateTime CreatedDate { get; set; }
 
         public double TotalAmount { get; set; }
+
+        public bool IsSold { get; set; }
         
     }
 }

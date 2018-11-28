@@ -34,10 +34,14 @@ namespace Library.Controllers
         {
             if (isAdminUser())
             {
-                if (bookService.SaveBook(book))
-                    return Ok(book);
-                else
-                    return BadRequest();
+                if (!bookService.IsPresentAlready(book.Name,book.Author))
+                {
+                    if (bookService.SaveBook(book))
+                        return Ok();
+                    else
+                        return BadRequest("Book Added Sucessfully");
+                }
+                return BadRequest("Book Is Already Present");
             }
             else
                 return Unauthorized();
