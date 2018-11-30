@@ -14,7 +14,7 @@ namespace LibraryServise
         private IUnitOfWork unitOfWork;
         private readonly IBookRepository bookRepository;
 
-        public BookService(IBookRepository _bookRepository,IUnitOfWork _unitOfWork)
+        public BookService(IBookRepository _bookRepository, IUnitOfWork _unitOfWork)
         {
             unitOfWork = _unitOfWork;
             bookRepository = _bookRepository;
@@ -22,12 +22,12 @@ namespace LibraryServise
 
         public IEnumerable<Books> getAll()
         {
-            return (bookRepository.GetAll().Where(b => b.NoOfStock > 0)).OrderByDescending(b=>b.Id);
+            return (bookRepository.GetAll().Where(b => b.NoOfStock > 0)).OrderByDescending(b => b.Id);
         }
-        
+
         public bool SaveBook(Books book)
         {
-            if (bookRepository.Add(book)!=null)
+            if (bookRepository.Add(book) != null)
             {
                 SaveChanges();
                 return true;
@@ -37,12 +37,12 @@ namespace LibraryServise
 
         public Books getBookById(int id)
         {
-            return bookRepository.Query(b=>b.Id == id).FirstOrDefault();
+            return bookRepository.Query(b => b.Id == id).FirstOrDefault();
         }
 
         public bool IsBookAvailableInStock(Books book)
         {
-            Books available = bookRepository.Query(b => b.Id == book.Id && b.NoOfBooksIsInUse < b.NoOfStock,true).FirstOrDefault();
+            Books available = bookRepository.Query(b => b.Id == book.Id && b.NoOfBooksIsInUse < b.NoOfStock, true).FirstOrDefault();
             if (available != null)
                 return true;
             else
@@ -51,10 +51,20 @@ namespace LibraryServise
 
         public void UpDateUseCountOfBook(int id)
         {
-            Books available = bookRepository.Query(b => b.Id ==id ).FirstOrDefault();
+            Books available = bookRepository.Query(b => b.Id == id).FirstOrDefault();
             if (available != null)
             {
                 available.NoOfBooksIsInUse = available.NoOfBooksIsInUse + 1;
+                SaveChanges();
+            }
+        }
+
+        public void DecrementUseCount(int id)
+        {
+            Books available = bookRepository.Query(b => b.Id == id).FirstOrDefault();
+            if (available != null && available.NoOfBooksIsInUse > 0)
+            {
+                available.NoOfBooksIsInUse = available.NoOfBooksIsInUse - 1;
                 SaveChanges();
             }
         }
@@ -74,18 +84,18 @@ namespace LibraryServise
             return false;
         }
 
-        public Dictionary<string,int> getAuthoreList()
+        public Dictionary<string, int> getAuthoreList()
         {
-            Dictionary<string,int> Authors = new Dictionary<string, int>();
+            Dictionary<string, int> Authors = new Dictionary<string, int>();
             List<Books> books = bookRepository.GetAll().ToList();
             foreach (var bk in books)
             {
                 string name = bk.Author;
                 int count = books.Count(b => b.Author == name);
-                if(!Authors.ContainsKey(name))
-                    Authors.Add(name,count);
+                if (!Authors.ContainsKey(name))
+                    Authors.Add(name, count);
             }
-            
+
             return Authors;
         }
 
@@ -97,9 +107,9 @@ namespace LibraryServise
             {
                 string name = bk.Category;
                 int count = books.Count(b => b.Category == name);
-                if(!Categories.ContainsKey(name))
+                if (!Categories.ContainsKey(name))
                     Categories.Add(name, count);
-                
+
             }
 
             return Categories;
@@ -115,13 +125,24 @@ namespace LibraryServise
             return bookRepository.Query(b => b.Category.Equals(name)).ToList();
         }
 
-        public bool IsPresentAlready(string bookName,string AuthoreName)
+        public bool IsPresentAlready(string bookName, string AuthoreName)
         {
             Books book = bookRepository.Query(b => b.Name.Equals(bookName) && b.Author.Equals(AuthoreName), true).FirstOrDefault();
             if (book != null)
                 return true;
             else
                 return false;
+        }
+
+        public void DecrementUseCountOfBook(int bookId)
+        {
+            if (bookId != 0)
+            {
+                Books book = bookRepository.GetById(bookId);
+                book.NoOfBooksIsInUse = book.NoOfBooksIsInUse - 1;
+                bookRepository.Update(book);
+                SaveChanges();
+            }
         }
 
         public void SaveChanges()
@@ -144,5 +165,7 @@ namespace LibraryServise
         IEnumerable<Books> getBooksOfAuthor(string name);
         IEnumerable<Books> getBooksOfCategory(string name);
         bool IsPresentAlready(string bookName,string AuthoreName);
+        void DecrementUseCountOfBook(int bookId);
+        void DecrementUseCount(int bookId);
     }
 }

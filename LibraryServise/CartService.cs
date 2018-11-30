@@ -75,6 +75,25 @@ namespace LibraryServise
             return names;
         }
 
+        public int CountOfBooksInCart(string uid)
+        {
+            return cartRepository.Query(r => r.userId.Equals(uid)).FirstOrDefault().selectedBooks.Count;
+        }
+
+        public void removeBookFromCart(string uid, int bookId)
+        {
+            if (!string.IsNullOrEmpty(uid) && bookId != 0)
+            {
+                UserCart cart = cartRepository.Query(c => c.userId.Equals(uid)).FirstOrDefault();
+                if (cart != null)
+                {
+                    cart.selectedBooks.Remove(cart.selectedBooks.Where(b=>b.Id==bookId).FirstOrDefault());
+                    cartRepository.Update(cart);
+                    SaveChanges();
+                }
+            }
+        }
+
         public void SaveChanges()
         {
             unitOfWork.SaveChanges();
@@ -89,5 +108,7 @@ namespace LibraryServise
         List<string> getAddedBookOfCategory(string uid,string category);
         UserCart GetCart(string uid);
         void SaveChanges();
+        int CountOfBooksInCart(string uid);
+        void removeBookFromCart(string uid,int bookId);
     }
 }

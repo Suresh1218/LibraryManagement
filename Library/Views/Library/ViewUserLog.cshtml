@@ -164,49 +164,18 @@
 		font-weight: 300;
 	}
 </style>
-<script>
 
-	function ReturnBook(url,bookId) {
-		var urlVal = url + '/api/LibraryApi/RemoveBookfromCart?bookId=' + bookId;
-		$.ajax({
-			url: urlVal,
-			type: "POST",
-			contentType: 'application/json;charset=utf-8',
-			dataType: "json",
-			success: function (status,msg) {
-				if (status.status === 210 || status.status === 200) {
-					location.reload();
-					alert(msg);
-				}
-			},
-			complete: function (status,msg) {
-				if (status.status === 210 || status.status === 200) {
-					location.reload();
-					alert(msg);
-				}
-			},
-			error: function (status, msg) {
-				if (status.status === 401 || status.status === 400) {
-					location.reload();
-					alert(msg);
-				}
-			}
-
-		});
-	}
-	
-</script>
-@Html.Partial("_SideNavUser")
+@Html.Partial("_SideNavAdmin")
 <div class="shopping-cart">
 	<!-- Title -->
 	<div class="title">
-		Shopping Bag
+		User Catlog
 	</div>
 	@if (Model.cart != null)
 	{
 		foreach (var product in Model.cart.selectedBooks)
 		{
-			<div class="item" id="BookList_"@product.Id>
+			<div class="item" id="BookList_" @product.Id>
 				<div class="buttons">
 					<span class="delete-btn"></span>
 					<span class="like-btn"></span>
@@ -223,19 +192,16 @@
 				</div>
 
 				<div class="quantity">
-					<p id="count_@product.Id" type="text" name="name" >1</p>
+					<p id="count_@product.Id" type="text" name="name">1</p>
 				</div>
 
 				<div class="total-price">@product.BookPrice</div>
 
-				<div>
-					<button style="width=20%" onclick="ReturnBook('@Model.domain','@product.Id')">Return The Book</button>
-				</div>
 			</div>
 		}
 	}
 	else
 	{
-		<span>Your cart is Empty</span>
+		<span>Catlog is empty</span>
 	}
 </div>

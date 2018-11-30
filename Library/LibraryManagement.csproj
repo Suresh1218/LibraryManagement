@@ -325,6 +325,7 @@
     <Content Include="Views\Library\ViewAuthores.cshtml" />
     <Content Include="Views\Library\CheckAuthoreBooks.cshtml" />
     <Content Include="Views\Library\CheckCategoryBooks.cshtml" />
+    <Content Include="Views\Library\ViewUserLog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

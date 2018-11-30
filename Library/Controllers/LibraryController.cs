@@ -82,7 +82,6 @@ namespace Library.Controllers
             return View(model);
         }
         
-        
         [Authorize(Roles ="Admin")]
         public ActionResult UploadBook()
         {
@@ -139,11 +138,13 @@ namespace Library.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "User,Admin")]
-        public ActionResult ViewLog(string id)
+        [Authorize(Roles = "Admin")]
+        public ActionResult ViewUserLog(string userId)
         {
-
-            return View();
+            BooksViewModel model = new BooksViewModel();
+            model.domain = domain;
+            model.cart = cartService.GetCart(userId);
+            return View(model);
         }
 
         [Authorize(Roles = "User")]

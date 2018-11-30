@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,11 @@ namespace DataModel
     [Table("LibraryBooks")]
     public class Books
     {
+        public Books()
+        {
+            cart = new List<UserCart>();
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -32,5 +38,7 @@ namespace DataModel
 
         [NotMapped]
         public bool isAddedToCart { get; set; }
+
+        public ICollection<UserCart> cart { get; set; }
     }
 }

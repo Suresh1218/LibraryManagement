@@ -51,14 +51,34 @@ namespace Library.Controllers
         public IHttpActionResult AddBookToCart([FromUri]int bookId)
         {
             string uid = User.Identity.GetUserId();
-            Books selectBook = bookService.getBookById(bookId);
-            if (bookService.IsBookAvailableInStock(selectBook))
+            if (cartService.CountOfBooksInCart(uid) < 5)
             {
-                if (cartService.SaveOrUpdate(uid, selectBook))
-                    return Ok();
+                Books selectBook = bookService.getBookById(bookId);
+                if (bookService.IsBookAvailableInStock(selectBook))
+                {
+                    if (cartService.SaveOrUpdate(uid, selectBook))
+                        return Ok("Added Sucessfully");
+                }
             }
-            return BadRequest();
+            return BadRequest("error");
         }
+
+        [HttpPost]
+        public IHttpActionResult RemoveBookfromCart([FromUri]int bookId)
+        {
+            string uid = User.Identity.GetUserId();
+            if (!string.IsNullOrEmpty(uid))
+            {
+                cartService.removeBookFromCart(uid, bookId);
+
+                //decrement use count of book
+                bookService.DecrementUseCount(bookId);
+
+                return Ok("Removed Succefully");
+            }
+            return BadRequest("Invalid Request");
+        }
+
         [HttpPost]
         public IHttpActionResult UpdateBook(Books book)
         {

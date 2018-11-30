@@ -14,25 +14,21 @@
 			type: "POST",
 			contentType: 'application/json;charset=utf-8',
 			dataType: "json",
-			success: function () {
+			success: function (status,data) {
 				if (status.status === 210 || status.status === 200) {
 					location.reload();
-					alert("Added Successfully");
+					alert(data);
 				}
 			},
-			complete: function () {
-				location.reload();
-				alert("Saved Successfully ");
+			complete: function (status,data) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload();
+					alert(data);
+				}
 			}
 
 		});
 	}
-
-	function UpdateBookDetails(bookId)
-	{
-
-	}
-
 </script>
 	@if (Model.IsAdmin)
 	{
@@ -56,6 +52,7 @@
 
 			foreach (var info in Model.books)
 			{
+				var stock = info.NoOfStock - info.NoOfBooksIsInUse;
 				<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 card1 card2" style="padding-top: 40px;border-bottom-width: 20px;padding-bottom: 20px;margin-bottom: 260px;">
 					<div class="panel panel-primary" style="border-color: #485563;border-radius: 0px;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);">
 						<div class="panel-heading" style="border-color: #485563;border-radius: 0px; background-color: white">
@@ -69,7 +66,7 @@
 						<div class="panel-body" style="background-color:white">
 							<h3 style="color: black;width:auto;overflow:hidden;" align="center">@info.Name</h3><br />
 							<h4 style="color: black;width:auto;overflow:hidden;">Authore - @info.Author</h4>
-							<h5 style="color: black;width:auto;overflow:hidden;">In Stock - @info.NoOfStock</h5>
+							<h5 style="color: black;width:auto;overflow:hidden;">In Stock - @stock </h5>
 
 							@if (Model.IsAdmin)
 							{
@@ -78,14 +75,22 @@
 							}
 							else
 							{
-								if (info.isAddedToCart)
+								if (info.NoOfStock > info.NoOfBooksIsInUse)
 								{
-									<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" disabled>Added In Cart</button>
+									if (info.isAddedToCart)
+									{
+										<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" disabled>Added In Cart</button>
+									}
+									else
+									{
+										<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50">Add To Cart</button>
+									}
 								}
 								else
 								{
-									<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" >Add To Cart</button>
+									<button onclick="AddBooktoCart('@Model.domain','@info.Id')" class="open-AddBookDialog1 btn btn-primary btn-lg" style="width: 50%; border-radius:0px ;background-color: #ffc903;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); border-color:#2b3e50" disabled>Out Of Stock</button>
 								}
+
 							}
 
 						</div>
