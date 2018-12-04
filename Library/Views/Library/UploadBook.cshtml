@@ -3,17 +3,82 @@
 @{
     ViewBag.Title = "UploadBook";
 }
-
+<script type="text/javascript" src="~/Scripts/jquery-3.3.1.js"></script>
 <script>
-	
+
+	function UpoadFile() {
+
+			// Checking whether FormData is available in browser  
+			if (window.FormData !== undefined) {
+
+				var fileUpload = $("#image").get(0);
+				var files = fileUpload.files;
+
+				// Create FormData object  
+				var fileData = new FormData();
+
+				// Looping over all files and add it to FormData object  
+				for (var i = 0; i < files.length; i++) {
+					fileData.append(files[i].name, files[i]);
+				}
+
+				var BookName = $("#name").val();
+				var AuthoreName = $("#authore").val();
+				var Quantity = $("#quantity").val();
+				var Price = $("#price").val();
+				var e = document.getElementById("category");
+				var category = e.options[e.selectedIndex].value;
+				if (BookName !== null && AuthoreName !== null && Quantity !== null) {
+					// Adding one more key to FormData object  
+					fileData.append('Name', BookName);
+					fileData.append('Author', AuthoreName);
+					fileData.append('NoOfStock', Quantity);
+					fileData.append('NoOfBooksIsInUse', 0);
+					fileData.append('BookPrice', Price);
+					fileData.append('Category', category);
+
+					$.ajax({
+						url: '/Library/UploadBookImage',
+						type: "POST",
+						contentType: false, // Not to set any content header  
+						processData: false, // Not to process data  
+						data: fileData,
+						success: function (result) {
+							alert(result);
+						},
+						error: function (err) {
+							alert(err.statusText);
+						}
+					});
+				}
+				
+			} else {
+				alert("FormData is not supported.");
+			}
+		}
+
+
 	function AddBook(url)
 	{
-		var urlVal = url + '/api/LibraryApi/SaveBook';
+		var urlVal = url + '/api/LibraryApi/SaveBookAndImage';
 		var Price = $("#price").val();
 		var BookName = $("#name").val();
 		var AuthoreName = $("#authore").val();
 		var Quantity = $("#quantity").val();
 		var ImgUrl = $("#image").val();
+		
+		var fileUpload = $("#image").get(0);
+		var files = fileUpload.files;
+		// Create FormData object  
+		var fileData = new FormData();
+
+		// Looping over all files and add it to FormData object  
+		for (var i = 0; i < files.length; i++) {
+			fileData.append(files[i].name, files[i]);
+		}
+
+		// Adding one more key to FormData object  
+		fileData.append('BookImage', "image");
 
 		var e = document.getElementById("category");
 		var strUser = e.options[e.selectedIndex].value;
@@ -26,7 +91,7 @@
 				"NoOfStock": Quantity,
 				"NoOfBooksIsInUse":0,
 				"BookPrice": Price,
-				"ImageUrl": ImgUrl,
+				"ImageUrl": fileData,
 				"Category": strUser
 			}
 		}
@@ -36,13 +101,22 @@
 			contentType: 'application/json;charset=utf-8',
 			data: JSON.stringify(dataObj),
 			dataType: "json",
-			success: function () {
-				
-			},
-			complete: function () {
+			success: function (status, data) {
 				if (status.status === 210 || status.status === 200) {
+					location.reload(true);
+					alert(data);
+				}
+			},
+			complete: function (status, data) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload(true);
+					alert(data);
+				}
+			},
+			error: function (status, data) {
+				if (status.status === 400 || status.status === 401) {
 					location.reload();
-					alert("Saved Successfully");
+					alert(data);
 				}
 			}
 		});
@@ -84,7 +158,7 @@
 	</div>
 	<div class="form-group">
 		<label for="UploadImage">UploadImage</label>
-		<input type="file" class="form-control" id="image" placeholder="Upload Image" />
+		<input type="file" value="Upload Files"  onchange="UpoadFile()" class="form-control" id="image" placeholder="Upload Image" />
 	</div>
 	<button type="submit" class="btn btn-primary" onclick="AddBook('@Model.domain')">Save</button>
 	<p id="onSuccess"></p>

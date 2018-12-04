@@ -28,13 +28,16 @@
 			contentType: 'application/json;charset=utf-8',
 			data: JSON.stringify(dataObj),
 			dataType: "json",
-			success: function () {
-				
-			},
-			complete: function () {
+			success: function (status, data) {
 				if (status.status === 210 || status.status === 200) {
-					location.reload();
-					alert("Saved Successfully");
+					location.reload(true);
+					alert(data);
+				}
+			},
+			complete: function (status, data) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload(true);
+					alert(data);
 				}
 			}
 		});

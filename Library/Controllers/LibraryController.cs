@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -47,6 +48,7 @@ namespace Library.Controllers
             BooksViewModel model = new BooksViewModel();
             model.domain = domain;
             var AllBooks = bookService.getAll().ToList();
+            AllBooks.ForEach(bk => bk.ImageUrl = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bk.Image)));
             model.IsAdmin = isAdminUser();
             if (IsUser())
             {
@@ -65,14 +67,16 @@ namespace Library.Controllers
                                         NoOfStock = b.NoOfStock,
                                         BookPrice = b.BookPrice,
                                         isAddedToCart = true,
-                                        ImageUrl = b.ImageUrl,
+                                        ImageUrl = b.ImageUrl
                                     }).FirstOrDefault();
                     model.books.Add(bookmodel);
                 }
                 foreach (var book in AllBooks)
                 {
                     if (!model.books.Any(b => b.Id == book.Id))
+                    {
                         model.books.Add(book);
+                    }
                 }
             }
             else
@@ -165,10 +169,60 @@ namespace Library.Controllers
             return View(book);
         }
 
+        [HttpPost]
+        public ActionResult UploadBookImage()
+        {
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    byte[] ImageData = null;
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+
+                    HttpPostedFileBase file = files[0];
+                    
+                    ImageData = new byte[file.ContentLength];
+
+                    file.InputStream.Read(ImageData, 0, file.ContentLength);
+                    
+                    Books book = new Books();
+
+                    book.Name = Request.Params.Get(0);
+                    book.Author = Request.Params.Get(1);
+                    book.NoOfStock = Convert.ToInt16(Request.Params.Get(2));
+                    book.NoOfBooksIsInUse = 0;
+                    book.BookPrice = Convert.ToInt32(Request.Params.Get(4));
+                    book.Category = Request.Params.Get(5);
+                    book.Image = ImageData;
+
+                    if (!bookService.IsPresentAlready(book.Name, book.Author))
+                    {
+                        if (bookService.SaveBook(book))
+                        {
+                            // Returns message that successfully uploaded  
+                            return Json("Book Uploaded Successfully!");
+                        }
+                    }
+                    return Json("Book Already exists");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Json("No book selected.");
+            }
+        }
+
         [AllowAnonymous]
         public ActionResult CheckAuthoreBooks(string name = "Cris Hammer")
         {
             BooksViewModel model = new BooksViewModel();
+            model.domain = domain;
             var AllBooks = bookService.getBooksOfAuthor(name).ToList();
             model.IsAdmin = isAdminUser();
             if (IsUser() && AllBooks != null) 
@@ -189,7 +243,7 @@ namespace Library.Controllers
                                             NoOfStock = b.NoOfStock,
                                             BookPrice = b.BookPrice,
                                             isAddedToCart = true,
-                                            ImageUrl = b.ImageUrl,
+                                            Image = b.Image
                                         }).FirstOrDefault();
                         model.books.Add(bookmodel);
                     }
@@ -214,6 +268,7 @@ namespace Library.Controllers
         public ActionResult CheckCategoryBooks(string category = "Fiction")
         {
             BooksViewModel model = new BooksViewModel();
+            model.domain = domain;
             //BookCategory.BookCategories mycategory = (BookCategory.BookCategories)Enum.Parse(typeof(BookCategory.BookCategories), category, true);
             var AllBooks = bookService.getBooksOfCategory(category).ToList();
             model.IsAdmin = isAdminUser();
@@ -235,7 +290,7 @@ namespace Library.Controllers
                                             NoOfStock = b.NoOfStock,
                                             BookPrice = b.BookPrice,
                                             isAddedToCart = true,
-                                            ImageUrl = b.ImageUrl,
+                                            Image = b.Image
                                         }).FirstOrDefault();
                         model.books.Add(bookmodel);
                     }

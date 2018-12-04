@@ -40,9 +40,12 @@ namespace Library.Controllers
             {
                 return RedirectToAction("HomeAsync", "Library");
             }
+            
+            var AllBooks = bookService.getAll().ToList();
+            AllBooks.ForEach(bk => bk.ImageUrl = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bk.Image)));
             BooksViewModel model = new BooksViewModel
             {
-                books = bookService.getAll().ToList()
+                books = AllBooks
             };
             return View(model);
         }

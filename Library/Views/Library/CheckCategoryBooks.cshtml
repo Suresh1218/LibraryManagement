@@ -12,13 +12,16 @@
 			type: "POST",
 			contentType: 'application/json;charset=utf-8',
 			dataType: "json",
-			success: function () {
-				
-			},
-			complete: function () {
+			success: function (status, data) {
 				if (status.status === 210 || status.status === 200) {
-					location.reload();
-					alert("Added Successfully");
+					location.reload(true);
+					alert(data);
+				}
+			},
+			complete: function (status, data) {
+				if (status.status === 210 || status.status === 200) {
+					location.reload(true);
+					alert(data);
 				}
 			}
 
@@ -64,7 +67,7 @@ else
 						}
 						else
 						{
-							<td><button type="button" class="btn btn-primary" onclick="AddBooktoCart('@Model.domain','@category')">Add To Cart</button></td>
+							<td><button type="button" class="btn btn-primary" onclick="AddBooktoCart('@Model.domain','@category.Id')">Add To Cart</button></td>
 						}
 
 					}

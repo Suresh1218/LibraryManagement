@@ -16,6 +16,8 @@
 		{
 			foreach (var info in Model.books)
 			{
+				var stock = info.NoOfStock - info.NoOfBooksIsInUse;
+				var imageName = string.Join("", info.Name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries))+".png";
 				<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 card1 card2" style="padding-top: 40px;border-bottom-width: 20px;padding-bottom: 20px;margin-bottom: 260px;">
 					<div class="panel panel-primary" style="border-color: #485563;border-radius: 0px;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);">
 						<div class="panel-heading" style="border-color: #485563;border-radius: 0px; background-color: white">
@@ -29,7 +31,7 @@
 						<div class="panel-body" style="background-color:white">
 							<h3 style="color: black;width:auto;overflow:hidden;" align="center">@info.Name</h3><br />
 							<h3 style="color: black;width:auto;overflow:hidden;">Authore - @info.Author</h3>
-							<h3 style="color: black;width:auto;overflow:hidden;">In Stock - @info.NoOfStock</h3>
+							<h3 style="color: black;width:auto;overflow:hidden;">In Stock - @stock</h3>
 						</div>
 					</div>
 				</div>

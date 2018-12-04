@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Library.Models;
 using System.Web.Http.Cors;
+using System.IO;
 
 namespace Library.Controllers
 {
@@ -37,7 +38,7 @@ namespace Library.Controllers
                 if (!bookService.IsPresentAlready(book.Name,book.Author))
                 {
                     if (bookService.SaveBook(book))
-                        return Ok();
+                        return Ok("Added successfully");
                     else
                         return BadRequest("Book Added Sucessfully");
                 }
@@ -57,7 +58,7 @@ namespace Library.Controllers
                 if (bookService.IsBookAvailableInStock(selectBook))
                 {
                     if (cartService.SaveOrUpdate(uid, selectBook))
-                        return Ok("Added Sucessfully");
+                        return Ok("Added Successfully");
                 }
             }
             return BadRequest("error");
@@ -83,7 +84,7 @@ namespace Library.Controllers
         public IHttpActionResult UpdateBook(Books book)
         {
             if (bookService.UpdateBook(book))
-                return Ok();
+                return Ok("Success");
             return BadRequest();
         }
 

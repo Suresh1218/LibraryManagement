@@ -16,13 +16,13 @@
 			dataType: "json",
 			success: function (status,data) {
 				if (status.status === 210 || status.status === 200) {
-					location.reload();
+					location.reload(true);
 					alert(data);
 				}
 			},
 			complete: function (status,data) {
 				if (status.status === 210 || status.status === 200) {
-					location.reload();
+					location.reload(true);
 					alert(data);
 				}
 			}
@@ -53,6 +53,7 @@
 			foreach (var info in Model.books)
 			{
 				var stock = info.NoOfStock - info.NoOfBooksIsInUse;
+				
 				<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 card1 card2" style="padding-top: 40px;border-bottom-width: 20px;padding-bottom: 20px;margin-bottom: 260px;">
 					<div class="panel panel-primary" style="border-color: #485563;border-radius: 0px;box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);">
 						<div class="panel-heading" style="border-color: #485563;border-radius: 0px; background-color: white">

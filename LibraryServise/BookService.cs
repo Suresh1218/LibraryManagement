@@ -127,7 +127,7 @@ namespace LibraryServise
 
         public bool IsPresentAlready(string bookName, string AuthoreName)
         {
-            Books book = bookRepository.Query(b => b.Name.Equals(bookName) && b.Author.Equals(AuthoreName), true).FirstOrDefault();
+            Books book = bookRepository.Query(b => b.Name.ToLower().Equals(bookName.ToLower()) && b.Author.ToLower().Equals(AuthoreName.ToLower()), true).FirstOrDefault();
             if (book != null)
                 return true;
             else

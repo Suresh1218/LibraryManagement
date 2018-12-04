@@ -30,15 +30,16 @@ namespace DataModel
         
         public double BookPrice { get; set; }
 
-        public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
 
         public string Category { get; set; }
         
-        public int CartAddedQuantity { get; set; }
-
         [NotMapped]
         public bool isAddedToCart { get; set; }
 
         public ICollection<UserCart> cart { get; set; }
+
+        [NotMapped]
+        public string ImageUrl { get; set; }
     }
 }
