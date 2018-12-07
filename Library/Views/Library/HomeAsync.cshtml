@@ -14,16 +14,10 @@
 			type: "POST",
 			contentType: 'application/json;charset=utf-8',
 			dataType: "json",
-			success: function (status,data) {
-				if (status.status === 210 || status.status === 200) {
+			success: function (status, data) {
+				if (data === "success") {
 					location.reload(true);
-					alert(data);
-				}
-			},
-			complete: function (status,data) {
-				if (status.status === 210 || status.status === 200) {
-					location.reload(true);
-					alert(data);
+					alert(status);
 				}
 			}
 
@@ -64,7 +58,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel-body" style="background-color:white">
+						<div class="panel-body" style="background-color:white;height:300px">
 							<h3 style="color: black;width:auto;overflow:hidden;" align="center">@info.Name</h3><br />
 							<h4 style="color: black;width:auto;overflow:hidden;">Authore - @info.Author</h4>
 							<h5 style="color: black;width:auto;overflow:hidden;">In Stock - @stock </h5>

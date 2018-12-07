@@ -31,24 +31,6 @@ namespace Library.Controllers
         }
         
         [HttpPost]
-        public IHttpActionResult SaveBook(Books book)
-        {
-            if (isAdminUser())
-            {
-                if (!bookService.IsPresentAlready(book.Name,book.Author))
-                {
-                    if (bookService.SaveBook(book))
-                        return Ok("Added successfully");
-                    else
-                        return BadRequest("Book Added Sucessfully");
-                }
-                return BadRequest("Book Is Already Present");
-            }
-            else
-                return Unauthorized();
-        }
-
-        [HttpPost]
         public IHttpActionResult AddBookToCart([FromUri]int bookId)
         {
             string uid = User.Identity.GetUserId();
@@ -61,7 +43,7 @@ namespace Library.Controllers
                         return Ok("Added Successfully");
                 }
             }
-            return BadRequest("error");
+            return Ok("Only 5 books are allowed to Add in cart");
         }
 
         [HttpPost]

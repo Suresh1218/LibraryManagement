@@ -41,5 +41,6 @@ namespace DataModel
 
         [NotMapped]
         public string ImageUrl { get; set; }
+        
     }
 }

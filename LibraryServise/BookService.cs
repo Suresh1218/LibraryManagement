@@ -145,6 +145,17 @@ namespace LibraryServise
             }
         }
 
+        public void DecrementStockCount(int bookId)
+        {
+            if (bookId != 0)
+            {
+                Books book = bookRepository.GetById(bookId);
+                book.NoOfStock = book.NoOfStock - 1;
+                bookRepository.Update(book);
+                SaveChanges();
+            }
+        }
+
         public void SaveChanges()
         {
             unitOfWork.SaveChanges();
@@ -167,5 +178,6 @@ namespace LibraryServise
         bool IsPresentAlready(string bookName,string AuthoreName);
         void DecrementUseCountOfBook(int bookId);
         void DecrementUseCount(int bookId);
+        void DecrementStockCount(int bookId);
     }
 }

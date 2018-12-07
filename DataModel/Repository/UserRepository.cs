@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataModel.Repository
 {
-    public class UserRepository : RepositoryBase<UserLog>, IUserRepository
+    public class UserRepository : RepositoryBase<UserOrder>, IUserRepository
     {
         public UserRepository(IDataBaseFactory dbFactory) : base(dbFactory)
         {
@@ -20,7 +20,7 @@ namespace DataModel.Repository
         }
     }
 
-    public interface IUserRepository : IRepository<UserLog>
+    public interface IUserRepository : IRepository<UserOrder>
     {
         LibraryDBModel GetDBContext();
     }

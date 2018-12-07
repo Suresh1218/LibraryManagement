@@ -80,8 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BookCategory.cs" />
-    <Compile Include="Books.cs" />
+    <Compile Include="DBModels\BookCategory.cs" />
+    <Compile Include="DBModels\Books.cs" />
     <Compile Include="Infrastructure\DataBaseFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IRepository.cs" />
@@ -93,8 +93,8 @@
     <Compile Include="Repository\UserCartRepository.cs" />
     <Compile Include="Repository\UserLogRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
-    <Compile Include="UserCart.cs" />
-    <Compile Include="UserLog.cs" />
+    <Compile Include="DBModels\UserCart.cs" />
+    <Compile Include="DBModels\UserOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataModel.Repository
 {
-    public class UserLogRepository : RepositoryBase<Books>, IUserLogRepository
+    public class UserLogRepository : RepositoryBase<UserOrder>, IUserLogRepository
     {
         public UserLogRepository(IDataBaseFactory dbFactory) : base(dbFactory)
         {
@@ -19,7 +19,7 @@ namespace DataModel.Repository
         }
     }
 
-    public interface IUserLogRepository : IRepository<Books>
+    public interface IUserLogRepository : IRepository<UserOrder>
     {
         LibraryDBModel GetDBModel();
     }

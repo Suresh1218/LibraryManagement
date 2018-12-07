@@ -14,8 +14,10 @@ namespace LibraryServise
         private IUnitOfWork unitOfWork;
         private readonly IUserCartRepository cartRepository;
         private readonly IBookService bookService;
-        public CartService(IUserCartRepository _cartRepository, IUnitOfWork _unitOfWork, IBookService _bookService)
+        private readonly IOrderService orderService;
+        public CartService(IUserCartRepository _cartRepository, IUnitOfWork _unitOfWork, IBookService _bookService, IOrderService _orderService)
         {
+            orderService = _orderService;
             bookService = _bookService;
             unitOfWork = _unitOfWork;
             cartRepository = _cartRepository;
@@ -45,6 +47,16 @@ namespace LibraryServise
                 savecart.TotalAmount = savecart.selectedBooks.Sum(x => x.BookPrice);
             }
             SaveChanges();
+
+            UserOrder order = new UserOrder();
+            order.UserId = uid;
+            order.bookId = book.Id;
+            order.cartId = savecart.CartId;
+            order.BuyTime = DateTime.UtcNow;
+            order.IsReturned = false;
+            order.ReturnTime = DateTime.UtcNow;
+            orderService.AddOrder(order);
+            
             bookService.UpDateUseCountOfBook(book.Id);
             return true;
         }
@@ -90,6 +102,7 @@ namespace LibraryServise
                     cart.selectedBooks.Remove(cart.selectedBooks.Where(b=>b.Id==bookId).FirstOrDefault());
                     cartRepository.Update(cart);
                     SaveChanges();
+                    orderService.ReturnBook(uid, cart.CartId, bookId);
                 }
             }
         }

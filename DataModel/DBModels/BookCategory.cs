@@ -10,6 +10,15 @@ namespace DataModel
 {
     public class BookCategory
     {
+        public static Dictionary<int, int> refundPolicy = new Dictionary<int, int>()
+        {
+            { 1,70},
+            { 2,60},
+            { 3,50},
+            { 4,40},
+            { 5,30}
+        };
+
         public enum BookCategories {
             [Description("Computer Science")]
             Computer_science = 1,
