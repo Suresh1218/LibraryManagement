@@ -15,6 +15,7 @@ namespace Library.Models
         public Dictionary<BookCategories, string> bookCategories { get; set; }
         public Dictionary<string, int> AuthorAndBookList { get; set; }
         public Dictionary<string, int> CategoriesAndCount { get; set; }
+        public List<BookStatisticsViewModel> Bookstats { get; set; }
 
         public UserCart cart { get; set; }
 
@@ -23,6 +24,7 @@ namespace Library.Models
 
         public BooksViewModel()
         {
+            Bookstats = new List<BookStatisticsViewModel>();
             books = new List<Books>();
             Users = new List<ApplicationUser>();
             bookCategories = new Dictionary<BookCategories, string>();

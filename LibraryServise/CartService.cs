@@ -25,7 +25,24 @@ namespace LibraryServise
 
         public UserCart GetCart(string uid)
         {
-            return cartRepository.Query(x => x.userId == uid).FirstOrDefault();
+            UserCart cart = cartRepository.Query(x => x.userId == uid).FirstOrDefault();
+            List<UserOrder> orders = new List<UserOrder>();
+            orders = orderService.getOrdersOfUser(uid);
+            var orderedBook = (from order in orders
+                               from book in cart.selectedBooks
+                               where order.bookId == book.Id && order.BuyTime.Day > DateTime.UtcNow.Day + 5
+                               select book).ToList();
+            if (orderedBook != null)
+            {
+                foreach (var o in orderedBook)
+                {
+                    cart.selectedBooks.Remove(o);
+                    bookService.DecrementStockCount(o.Id);
+                    orderService.Update5MonthOlderOrder(uid, cart.CartId, o.Id);
+                }
+            }
+            SaveChanges();
+            return cartRepository.Query(x => x.userId == uid,true).FirstOrDefault();
         }
 
         public bool SaveOrUpdate(string uid,Books book)

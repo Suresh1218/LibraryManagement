@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿using AutoMapper;
+using DataModel;
 using Library.Models;
 using LibraryServise;
 using Microsoft.AspNet.Identity;
@@ -21,10 +22,12 @@ namespace Library.Controllers
         private readonly IUserService userService;
         private readonly IBookService bookService;
         private readonly ICartService cartService;
+        private readonly IOrderService orderService;
         private string domain = @"http://localhost:51353";
 
-        public LibraryController(IUserService _userService, IBookService _bookService, ICartService _cartService)
+        public LibraryController(IUserService _userService, IBookService _bookService, ICartService _cartService, IOrderService _orderService)
         {
+            orderService = _orderService;
             userService = _userService;
             bookService = _bookService;
             cartService = _cartService;
@@ -158,6 +161,7 @@ namespace Library.Controllers
             BooksViewModel model = new BooksViewModel();
             model.domain = domain;
             model.cart = cartService.GetCart(id);
+            
             return View(model);
         }
 
@@ -310,6 +314,29 @@ namespace Library.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult BookStatistics()
+        {
+            BooksViewModel model = new BooksViewModel();
+            List<Books> books = bookService.getAll().ToList();
+            List<double> bookEarnig = new List<double>();
+            if (books != null)
+            {
+                Mapper.Map<List<Books>, List<BookStatisticsViewModel>>(books, model.Bookstats);
+                foreach (var book in books)
+                {
+                    double booklog = orderService.getBookEarnings(book.Id);
+                    var bookstat = model.Bookstats.Where(c => c.BookName.Equals(book.Name)).FirstOrDefault();
+                    if (bookstat != null)
+                    {
+                        bookstat.BookEarnings = booklog;
+                    }
+                }
+            }
+            
+            return View(model);
+        }
+        
         [NonAction]
         public bool isAdminUser()
         {

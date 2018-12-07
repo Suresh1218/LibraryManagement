@@ -139,7 +139,7 @@ namespace LibraryServise
             if (bookId != 0)
             {
                 Books book = bookRepository.GetById(bookId);
-                book.NoOfBooksIsInUse = book.NoOfBooksIsInUse - 1;
+                book.NoOfBooksIsInUse -=  1;
                 bookRepository.Update(book);
                 SaveChanges();
             }
@@ -150,7 +150,8 @@ namespace LibraryServise
             if (bookId != 0)
             {
                 Books book = bookRepository.GetById(bookId);
-                book.NoOfStock = book.NoOfStock - 1;
+                book.NoOfStock -=  1;
+                book.NoOfSoldBooks += 1;
                 bookRepository.Update(book);
                 SaveChanges();
             }

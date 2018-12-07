@@ -22,6 +22,8 @@ namespace Library
 
             var container = new ContainerBuilder();
             ConfigurationContainer(container);
+
+            AutoMapperConfiguration.configuration();
         }
         public static void ConfigurationWebApiContainer(ContainerBuilder containerBuilder)
         {

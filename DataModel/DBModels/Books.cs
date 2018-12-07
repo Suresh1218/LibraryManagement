@@ -26,6 +26,8 @@ namespace DataModel
         [Required]
         public int NoOfStock { get; set; }
 
+        public int NoOfSoldBooks { get; set; }
+
         public int NoOfBooksIsInUse { get; set; }
         
         public double BookPrice { get; set; }

@@ -27,24 +27,27 @@ namespace LibraryServise
             SaveChanges();
         }
 
+        public void Update5MonthOlderOrder(string uid, int cartId, int bookId)
+        {
+            UserOrder order = userLogRepository.Query(o => o.UserId.Equals(uid) && o.bookId == bookId && o.cartId == cartId && o.IsReturned == false).FirstOrDefault();
+            order.IsReturned = true;
+            order.RefundAmount = 0;
+            order.BookEarning = 0;
+            SaveChanges();
+        }
+
         public void ReturnBook(string uid, int cartId, int bookId)
         {
             int value = 0;
             UserOrder order = userLogRepository.Query(o => o.UserId.Equals(uid) && o.bookId == bookId && o.cartId == cartId && o.IsReturned == false).FirstOrDefault();
             if (order != null)
             {
-                int refundper =  DateTime.UtcNow.Minute - order.BuyTime.Minute;
+                int refundper =  DateTime.UtcNow.Day - order.BuyTime.Day;
                 Books bk = bookService.getBookById(bookId);
                 
                 order.ReturnTime = DateTime.UtcNow;
-                if (refundper > 5)
-                {
-                    order.RefundAmount =  0;
-                    order.BookEarning =  0;
-                    order.IsReturned = false;
-                    bookService.DecrementStockCount(bk.Id);
-                }
-                else if(refundper > 0 && refundper < 5)
+                
+                if(refundper > 0 && refundper < 5)
                 {
                     BookCategory.refundPolicy.TryGetValue(refundper, out value);
                     order.IsReturned = true;
@@ -56,6 +59,16 @@ namespace LibraryServise
             }
         }
 
+        public double getBookEarnings(int bookId)
+        {
+            return (userLogRepository.Query(o => o.bookId == bookId).ToList()).Sum(b => b.BookEarning);
+        }
+
+        public List<UserOrder> getOrdersOfUser(string uid)
+        {
+            return userLogRepository.Query(o => o.UserId.Equals(uid)).ToList();
+        }
+
         public void SaveChanges()
         {
             unitOfWork.SaveChanges();
@@ -64,7 +77,10 @@ namespace LibraryServise
     public interface IOrderService
     {
         void ReturnBook(string uid, int cartId, int bookId);
+        UserOrder Update5MonthOlderOrder(string uid,int cartId,int bookId);
         void AddOrder(UserOrder order);
+        double getBookEarnings(int bookId);
+        List<UserOrder> getOrdersOfUser(string uid);
         void SaveChanges();
     }
 }

@@ -1,0 +1,60 @@
+﻿@model Library.Models.BooksViewModel
+
+@{
+	ViewBag.Title = "BookStatistics";
+}
+<style>
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+		width: 100%;
+		border: 1px solid #ddd;
+	}
+
+	th, td {
+		text-align: center;
+		padding: 16px;
+	}
+
+		th:first-child, td:first-child {
+			text-align: left;
+		}
+
+	tr:nth-child(even) {
+		background-color: #f2f2f2
+	}
+</style>
+
+<script>
+
+	function SeeBooks(authorName) {
+
+	}
+
+</script>
+
+@Html.Partial("_SideNavAdmin")
+
+<div>
+	<table>
+		<tr>
+			<th style="width:50%">Book Name</th>
+
+			<th>No Of Books Sold</th>
+			<th>No Of Books In Use</th>
+			<th>Total Profit</th>
+		</tr>
+		@if (Model.Bookstats != null)
+		{
+			foreach (var author in Model.Bookstats)
+			{
+				<tr>
+					<td>@author.BookName</td>
+					<td>@author.BookCount</td>
+					<td>@author.NoOfBookInUse</td>
+					<td>@author.BookEarnings</td>
+				</tr>
+			}
+		}
+	</table>
+</div>
